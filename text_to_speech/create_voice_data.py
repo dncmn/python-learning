@@ -5,7 +5,7 @@ from watson_developer_cloud import TextToSpeechV1
 import  string
 
 text_to_speech = TextToSpeechV1(
-    iam_apikey='QbAV9t1aq389j5fF7CBzARrKj1UkosMQbhQ1ND1Tdg87',
+    iam_apikey='Uu2c5qtddT7gjEz0iBAD8hgJqAmP0kS0lCQOwqxGcdQB',
     url='https://stream.watsonplatform.net/text-to-speech/api'
 )
 
@@ -86,7 +86,9 @@ def read_xlsx(fileName):
     print "create voice data end"
 
 if __name__=="__main__":
-    read_xlsx("L2.xlsx")
+    # read_xlsx("L2.xlsx")
+    content='<voice-transformation type=\"Custom\" rate=\"x-slow\">'+"helloWorld"+'</voice-transformation>'
+    create_voice(content,"./output.mp3")
 
 
 
