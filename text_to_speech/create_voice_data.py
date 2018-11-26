@@ -45,8 +45,11 @@ def read_xlsx(fileName):
                             break
                     continue
                 content=row[voiceIndex].value # 找到要生成音频的内容
+                if len(content)==0:
+                    continue
+
                 fileName=file_path+row[voiceIndex+1].value+".mp3"
-                print voiceIndex,"content=",content,"fileName=",fileName
+                print voiceIndex,"content=",content,"fileName=",fileName,"str(content)=",str(content)
                 content= '<voice-transformation type=\"Custom\" rate=\"x-slow\">'+content+'</voice-transformation>'
                 if len(content)==0:
                     continue
@@ -77,6 +80,8 @@ def read_xlsx(fileName):
                 if voiceIndex==0:
                     break
                 content = row[voiceIndex+1].value  # 找到要生成音频的内容
+                if len(content)==0:
+                    continue
                 fileName = file_path + row[voiceIndex].value + ".mp3"
                 print voiceIndex, "content=", content, "fileName=", fileName
                 content = '<voice-transformation type=\"Custom\" rate=\"x-slow\">' + content + '</voice-transformation>'
@@ -86,9 +91,9 @@ def read_xlsx(fileName):
     print "create voice data end"
 
 if __name__=="__main__":
-    # read_xlsx("L2.xlsx")
-    content='<voice-transformation type=\"Custom\" rate=\"x-slow\">'+"helloWorld"+'</voice-transformation>'
-    create_voice(content,"./output.mp3")
+    read_xlsx("L6.xlsx")
+    # content='<voice-transformation type=\"Custom\" rate=\"x-slow\">'+"helloWorld"+'</voice-transformation>'
+    # create_voice(content,"./output.mp3")
 
 
 
