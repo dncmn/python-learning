@@ -3,9 +3,10 @@ import xlrd
 import os
 from watson_developer_cloud import TextToSpeechV1
 import  string
+import types
 
 text_to_speech = TextToSpeechV1(
-    iam_apikey='Uu2c5qtddT7gjEz0iBAD8hgJqAmP0kS0lCQOwqxGcdQB',
+    iam_apikey='O2yemJ6P95SW3vG9wyGrr-VZotoJKYmRwWzBvPuGNGxn',
     url='https://stream.watsonplatform.net/text-to-speech/api'
 )
 
@@ -47,6 +48,9 @@ def read_xlsx(fileName):
                 content=row[voiceIndex].value # 找到要生成音频的内容
                 if len(content)==0:
                     continue
+                if int(float(row[0].value))==5: #level8之后生成的语音,第五道题不生成语音
+                    continue
+
 
                 fileName=file_path+row[voiceIndex+1].value+".mp3"
                 print voiceIndex,"content=",content,"fileName=",fileName,"str(content)=",str(content)
@@ -61,9 +65,21 @@ def read_xlsx(fileName):
             for i in range(table.nrows):
                 row=table.row(i)
                 first=row[0].value
-                if type(row[0].value)==type(1.0):
-                    tmp=int(row[0].value)
-                    first=str(tmp)
+
+                # if type(row[0].value)==type(1.0):
+                #     tmp=int(row[0].value)
+                #     first=str(tmp)
+                # else:
+                m=type(first)
+                if m is types.StringType:
+                    print  "kind is string"
+                elif m is types.FloatType:
+                    first=str(int(float(first)))
+                elif m is types.IntType:
+                    first=str(first)
+                elif str(first.__class__).rfind("unicode")>0:
+                    first=first.encode('unicode-escape').decode('string_escape')
+
                 if string.rfind(first,"test".decode('utf-8'))==0:
                     voiceIndex=0
                     tmp = string.split(row[0].value, "-")
@@ -91,7 +107,7 @@ def read_xlsx(fileName):
     print "create voice data end"
 
 if __name__=="__main__":
-    read_xlsx("L6.xlsx")
+    read_xlsx("L8.xlsx")
     # content='<voice-transformation type=\"Custom\" rate=\"x-slow\">'+"helloWorld"+'</voice-transformation>'
     # create_voice(content,"./output.mp3")
 
