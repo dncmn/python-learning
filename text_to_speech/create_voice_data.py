@@ -6,7 +6,7 @@ import  string
 import types
 
 text_to_speech = TextToSpeechV1(
-    iam_apikey='O2yemJ6P95SW3vG9wyGrr-VZotoJKYmRwWzBvPuGNGxn',
+    iam_apikey='07qenCVrHOEUkO5P6v5J6o_5RHT3CpKzgNPFUQoP0Q9o',
     url='https://stream.watsonplatform.net/text-to-speech/api'
 )
 
