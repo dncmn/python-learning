@@ -6,7 +6,7 @@ import  string
 import types
 
 text_to_speech = TextToSpeechV1(
-    iam_apikey='07qenCVrHOEUkO5P6v5J6o_5RHT3CpKzgNPFUQoP0Q9o',
+    iam_apikey='qF4sb1e4TLG9h66RpeWCwLFR6noQefvNfP8Y1Wv5SHPn',
     url='https://stream.watsonplatform.net/text-to-speech/api'
 )
 
@@ -35,8 +35,18 @@ def read_xlsx(fileName):
             voiceIndex = 1
             for i in range(table.nrows):
                 row=table.row(i)
-                if string.rfind(row[0].value, "test") == 0: # 表示新开了一个类型
-                    tmp = string.split(row[0].value, "-")
+                first = row[0].value
+                m = type(first)
+                if m is types.StringType:
+                    print  "kind is string"
+                elif m is types.FloatType:
+                    first = str(int(float(first)))
+                elif m is types.IntType:
+                    first = str(first)
+                elif str(first.__class__).rfind("unicode") > 0:
+                    first = first.encode('unicode-escape').decode('string_escape')
+                if string.rfind(first, "test") == 0: # 表示新开了一个类型
+                    tmp = string.split(first, "-")
                     file_path = auido_path + "/" + tmp[1] + "/"
                     os.makedirs(file_path)
                     # 找出声音的索引
@@ -48,7 +58,7 @@ def read_xlsx(fileName):
                 content=row[voiceIndex].value # 找到要生成音频的内容
                 if len(content)==0:
                     continue
-                if int(float(row[0].value))==5: #level8之后生成的语音,第五道题不生成语音
+                if int(float(first))==5: #level8之后生成的语音,第五道题不生成语音
                     continue
 
 
@@ -65,11 +75,6 @@ def read_xlsx(fileName):
             for i in range(table.nrows):
                 row=table.row(i)
                 first=row[0].value
-
-                # if type(row[0].value)==type(1.0):
-                #     tmp=int(row[0].value)
-                #     first=str(tmp)
-                # else:
                 m=type(first)
                 if m is types.StringType:
                     print  "kind is string"
@@ -107,7 +112,7 @@ def read_xlsx(fileName):
     print "create voice data end"
 
 if __name__=="__main__":
-    read_xlsx("L8.xlsx")
+    read_xlsx("L0.xlsx")
     # content='<voice-transformation type=\"Custom\" rate=\"x-slow\">'+"helloWorld"+'</voice-transformation>'
     # create_voice(content,"./output.mp3")
 
